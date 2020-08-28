@@ -44,11 +44,13 @@ public class ContaController {
 		return contaService.inserirConta(conta);
 	}
 
+	//TODO A URI solicitada no trabalho é POST /conta/{numero}/{operacao}
 	@PostMapping("/{numero}/sacar")
 	public Conta sacar(@PathVariable Integer numero, @RequestParam Double quantia) throws ContaInvalida, QuantiaInvalida {
 		return contaService.sacar(numero, quantia);
 	}
 
+	//TODO A URI solicitada no trabalho é POST /conta/{numero}/{operacao}
 	@PostMapping("/{numero}/depositar")
 	public Conta depositar(@PathVariable Integer numero, @RequestParam Double quantia) throws ContaInvalida, QuantiaInvalida {
 		return contaService.depositar(numero, quantia);

@@ -49,6 +49,12 @@ public class ContaService {
 				break;
 			}
 		}
+		/*
+		 * FIXME	A lógica está errada neste ponto, a saber:
+		 * 			Desta forma não será possível alterar o número da conta conforme proposta do trabalho:
+		 * 				PUT /conta/numero - atualiza a conta (somente nome do titular e numero)
+		 *			Toda vez que alterar o número da conta será executado o bloco Else (ContaExistente)
+		 */
 		if(encontrada.getNumero() == contaAtualizada.getNumero()) {
 			encontrada.setNumero(contaAtualizada.getNumero());
 			encontrada.setTitular(contaAtualizada.getTitular());
@@ -60,6 +66,7 @@ public class ContaService {
 	}
 
 	public Conta inserirConta(Conta novaConta) {
+		//FIXME Deveria propagar uma Exception ao tentar criar uma conta com um número já existente.
 		contas.add(novaConta);
 		return novaConta;
 	}
@@ -72,6 +79,7 @@ public class ContaService {
 	public Conta sacar(Integer numero, Double quantia) throws ContaInvalida, QuantiaInvalida {
 		Conta encontrada = obterConta(numero);
 		if (encontrada.getSaldo() < quantia) {
+			//TODO deveria ter 2 tipos de Exceptions: SaldoInvalido(débito) e QuantiaInvalida(crédito)
 			throw new QuantiaInvalida();
 		} else {
 			encontrada.setSaldo(encontrada.getSaldo()-quantia);
@@ -81,6 +89,8 @@ public class ContaService {
 
 	public Conta depositar(Integer numero, Double quantia) throws ContaInvalida, QuantiaInvalida {
 		Conta encontrada = obterConta(numero);
+		
+		//TODO O limite mínimo poderia ser configurado em application.properties
 		if (quantia < 50) {
 			throw new QuantiaInvalida();
 		} else {
