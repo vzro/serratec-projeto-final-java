@@ -1,5 +1,6 @@
 package org.serratec.com.controllers;
 
+import org.serratec.com.exceptions.ContaExistente;
 import org.serratec.com.exceptions.ContaInvalida;
 import org.serratec.com.exceptions.QuantiaInvalida;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,15 @@ public class ExceptionsController {
 	@ExceptionHandler(QuantiaInvalida.class)
 	public ResponseEntity<String> quantiaInvalida(QuantiaInvalida exception) {
 		String mensagem = "Quantia inválida";
-		return ResponseEntity.notFound()
+		return ResponseEntity.badRequest()
+				.header("X-ERROR", mensagem)
+				.build();
+	}
+
+	@ExceptionHandler(ContaExistente.class)
+	public ResponseEntity<String> contaExistente(ContaExistente exception) {
+		String mensagem = "Conta Existente";
+		return ResponseEntity.badRequest()
 				.header("X-ERROR", mensagem)
 				.build();
 	}

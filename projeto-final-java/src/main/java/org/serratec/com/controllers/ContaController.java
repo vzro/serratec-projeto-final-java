@@ -3,6 +3,7 @@ package org.serratec.com.controllers;
 import java.util.List;
 
 import org.serratec.com.domain.Conta;
+import org.serratec.com.exceptions.ContaExistente;
 import org.serratec.com.exceptions.ContaInvalida;
 import org.serratec.com.exceptions.QuantiaInvalida;
 import org.serratec.com.services.ContaService;
@@ -34,7 +35,7 @@ public class ContaController {
 	}
 
 	@PutMapping("/{numero}")
-	public Conta atualizarConta(@PathVariable Integer numero, @RequestBody Conta conta) throws ContaInvalida {
+	public Conta atualizarConta(@PathVariable Integer numero, @RequestBody Conta conta) throws ContaInvalida, ContaExistente {
 		return contaService.atualizarConta(numero, conta);
 	}
 

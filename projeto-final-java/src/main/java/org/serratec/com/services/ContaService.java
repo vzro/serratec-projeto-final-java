@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.serratec.com.domain.Conta;
+import org.serratec.com.exceptions.ContaExistente;
 import org.serratec.com.exceptions.ContaInvalida;
 import org.serratec.com.exceptions.QuantiaInvalida;
 import org.springframework.stereotype.Service;
@@ -39,11 +40,23 @@ public class ContaService {
 		}
 	}
 
-	public Conta atualizarConta(Integer numero, Conta contaAtualizada) throws ContaInvalida {
+	public Conta atualizarConta(Integer numero, Conta contaAtualizada) throws ContaInvalida, ContaExistente {
 		Conta encontrada = obterConta(numero);
-		encontrada.setNumero(contaAtualizada.getNumero());
-		encontrada.setTitular(contaAtualizada.getTitular());
-		return encontrada;
+
+		for (Conta conta : contas) {
+			if(conta.getNumero().equals(numero)) {
+				encontrada = conta;
+				break;
+			}
+		}
+		if(encontrada.getNumero() == contaAtualizada.getNumero()) {
+			encontrada.setNumero(contaAtualizada.getNumero());
+			encontrada.setTitular(contaAtualizada.getTitular());
+			return encontrada;
+		} else {
+			throw new ContaExistente();
+		}
+
 	}
 
 	public Conta inserirConta(Conta novaConta) {
